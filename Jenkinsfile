@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout source code from GitHub repository
-                git 'https://github.com/yourusername/yourrepository.git'
+                git 'https://github.com/dkgithub2516/Python-Files.git'
             }
         }
 
@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // Build Docker image
                 script {
-                    docker.build('myapp')
+                    docker.build('sort')
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 // Run Docker container
                 script {
-                    docker.image('myapp').run('--name myapp-container -d')
+                    docker.image('sort').run('--name sort-container -d')
                 }
             }
         }
