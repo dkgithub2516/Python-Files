@@ -7,7 +7,7 @@ FROM python:3.8-slim
 WORKDIR /app
 
 # Copy the Python application into the container
-COPY myapp.py .
+COPY sort.py .
 
 # Command to run the Python application
-CMD ["python", "myapp.py"]
+CMD ["python", "sort.py"]
