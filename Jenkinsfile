@@ -1,35 +1,51 @@
 pipeline {
     agent any
+    
+    environment {
+        DOCKER_IMAGE = 'python:3.8'
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout source code from GitHub repository
                 git 'https://github.com/dkgithub2516/Python-Files.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Lint') {
             steps {
-                // Build Docker image
                 script {
-                    docker.build('sort')
+                    // Install dependencies
+                    sh 'pip install -r requirements.txt'
+                    // Run linting
+                    sh 'pylint sort.py'
                 }
             }
         }
 
         stage('Test') {
             steps {
-                // Execute test commands (if any)
-                sh 'python -m unittest discover'
+                script {
+                    // Run unit tests
+                    sh 'python -m unittest discover'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    docker.build('sort-app', '-f Dockerfile .')
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                // Run Docker container
                 script {
-                    docker.image('sort').run('--name sort-container -d')
+                    // Run Docker container
+                    docker.image('sort-app').run('--name sort-container -d -p 5000:5000')
                 }
             }
         }
